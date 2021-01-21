@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Form } from 'semantic-ui-react';
 import searchStyles from '../styles/searchStyles.module.css';
+import { fetchWeathers } from '../actions';
+import { useDispatch } from 'react-redux';
 
-const Search = ({ fetchWeathers }) => {
+const Search = () => {
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleInputChange = (e) => {
@@ -10,7 +13,7 @@ const Search = ({ fetchWeathers }) => {
   };
 
   const handleFormSubmit = () => {
-    fetchWeathers(searchQuery);
+    dispatch(fetchWeathers(searchQuery));
     setSearchQuery('');
   };
 

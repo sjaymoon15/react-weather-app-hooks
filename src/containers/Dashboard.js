@@ -1,45 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Container, Segment } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Search from '../components/Search';
 import Weather from '../components/Weather';
 import Title from '../components/Title';
-import { fetchWeathers } from '../actions';
 
-export class UnconnectedDashboard extends Component {
-  render() {
-    const { fetchWeathers, weathers } = this.props;
-    return (
-      <Container data-test='container-dashboard'>
-        <Search
-          data-test='container-dashboard-search'
-          fetchWeathers={fetchWeathers}
+const Dashboard = () => {
+  const weathers = useSelector((store) => store.weathers);
+
+  return (
+    <Container data-test='container-dashboard'>
+      <Search data-test='container-dashboard-search' />
+      <Segment>
+        <Title
+          data-test='container-dashboard-title'
+          city={weathers.city}
+          error={weathers.error}
         />
-        <Segment>
-          <Title
-            data-test='container-dashboard-title'
-            city={weathers.city}
-            error={weathers.error}
-          />
-          <Weather
-            data-test='container-dashboard-weather'
-            list={weathers.list}
-          />
-        </Segment>
-      </Container>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    weathers: state.weathers,
-  };
+        <Weather data-test='container-dashboard-weather' list={weathers.list} />
+      </Segment>
+    </Container>
+  );
 };
-
-const Dashboard = connect(mapStateToProps, { fetchWeathers })(
-  UnconnectedDashboard
-);
 
 export default Dashboard;
