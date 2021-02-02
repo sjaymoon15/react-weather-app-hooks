@@ -1,24 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Segment } from 'semantic-ui-react';
-import { useSelector } from 'react-redux';
 
 import Search from '../components/Search';
 import Weather from '../components/Weather';
 import Title from '../components/Title';
+import { fetchWeathers } from '../utils/helpers';
+import { FETCH_WEATHERS_ERROR_MESSAGE } from '../utils/constants';
 
 const Dashboard = () => {
-  const weathers = useSelector((store) => store.weathers);
+  const [weatherList, setWeatherList] = useState(null);
+  const [cityInfo, setCityInfo] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
+
+  const handleFormSubmit = async (searchQuery) => {
+    try {
+      const { data } = await fetchWeathers(searchQuery);
+      setWeatherList(data.list);
+      setCityInfo(data.city);
+      setFetchError(null);
+    } catch (error) {
+      setWeatherList(null);
+      setCityInfo(null);
+      setFetchError(FETCH_WEATHERS_ERROR_MESSAGE);
+    }
+  };
 
   return (
     <Container data-test='container-dashboard'>
-      <Search data-test='container-dashboard-search' />
+      <Search
+        data-test='container-dashboard-search'
+        handleFormSubmit={handleFormSubmit}
+      />
       <Segment>
         <Title
           data-test='container-dashboard-title'
-          city={weathers.city}
-          error={weathers.error}
+          city={cityInfo}
+          error={fetchError}
         />
-        <Weather data-test='container-dashboard-weather' list={weathers.list} />
+        <Weather data-test='container-dashboard-weather' list={weatherList} />
       </Segment>
     </Container>
   );
