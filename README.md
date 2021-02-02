@@ -1,10 +1,10 @@
 # React Weather App Project
 
-This is the Weather App project to practice React, Redux, and Jest Testing.
+This is the Weather App project to practice React, React-hooks
 
 ## Technologies used
 
-React, Redux, Semantic-ui, Jest, and Enzyme are used for this project.
+React, Semantic-ui
 
 ## Note
 
